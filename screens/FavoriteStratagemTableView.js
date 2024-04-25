@@ -3,6 +3,7 @@ import { TouchableOpacity } from 'react-native';
 import React, { useContext, useState, useEffect } from 'react';
 import { MMKV } from 'react-native-mmkv'
 import ArrowView from './ArrowView';
+import StratagemTableView from './StratagemTableView';
 
 import { ClientConnectionContext } from '../Contexts';
 import StratagemsInfo from '../StratagemsInfo';
@@ -34,37 +35,15 @@ export default function FavoriteStratagemTableView() {
   const onPressA3 = () => {
     console.log('SG_TEST_ABCLEFTD clicked');
 
-    console.log('favoriteStratagems', favoriteStratagemsId)
     console.log('favoriteStratagems', storage.getString('favorite_stratagems_id'))
     console.log('favoriteStratagems', storage.getAllKeys())
   };
 
-  console.log('favoriteStratagems-xx', favoriteStratagemIDs);
   const favoriteStratagems = StratagemsInfo.filter((stratagem) => favoriteStratagemIDs.includes(stratagem.id));
-  console.log('favoriteStratagems-xxy', favoriteStratagems);
-
-  var stratagemsRow = [];
-  for (let i = 0; i < favoriteStratagems.length; i += chunkSize) {
-    const chunk = favoriteStratagems.slice(i, i + chunkSize);
-    stratagemsRow.push(
-      <View key={'view_st_' + i} style={styles.arrowsRow}>
-        {
-          chunk.map((stratagem) => {
-            console.log('stratagem', stratagem);
-            return (
-              <TouchableOpacity key={'st_btn_' + stratagem.id} style={styles.arrowBtn}>
-                <stratagem.image style={styles.arrowBtnImage} />
-              </TouchableOpacity>
-            )
-          })
-        }
-      </View>
-    )
-  };/**/
 
   return (
     <View style={styles.container}>
-      {stratagemsRow}
+      <StratagemTableView rowItemCount={3} stratagemsData={favoriteStratagems}/>
       <ArrowView />
 
       <Button title="onPressA3" onPress={onPressA3}></Button>

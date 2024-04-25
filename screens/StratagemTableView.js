@@ -4,26 +4,34 @@ import React, { useContext, useState, useEffect } from 'react';
 import { MMKV } from 'react-native-mmkv'
 
 import { ClientConnectionContext } from '../Contexts';
-import StratagemsInfo from '../StratagemsInfo';
 
 import ProtocolInfo from '../ProtocolInfo_pb';
-import EagleAirstrike from "../assets/stratagems/Hangar/Eagle Airstrike.svg";
 
-export default function StratagemTableView() {
+
+const StratagemTableItem = ({ title, description, ImageTag, onPress, onLongPress, isFavorite }) => (
+  <TouchableOpacity
+    style={[styles.tableItem, isFavorite ? styles.tableItemFavorite : null]}
+    onPress={onPress}
+    onLongPress={onLongPress}>
+      <ImageTag style={styles.photo} />
+  </TouchableOpacity>
+);
+
+
+
+
+export default function StratagemTableView({rowItemCount, stratagemsData}) {
   const { client } = useContext(ClientConnectionContext);
   const storage = new MMKV()
   const [favoriteStratagemsId, setFavoriteStratagemsId] = useState(JSON.parse(storage.getString('favorite_stratagems_id')) || [])
 
   useEffect(() => {
-    console.log('favoriteStratagems2', favoriteStratagemsId)
     storage.set('favorite_stratagems_id', JSON.stringify(favoriteStratagemsId))
-    console.log('favoriteStratagems3', storage.getString('favorite_stratagems_id'))
   }, [favoriteStratagemsId])
 
-  const chunkSize = 3;
   const stratagemsRow = [];
-  for (let i = 0; i < StratagemsInfo.length; i += chunkSize)
-    stratagemsRow.push(StratagemsInfo.slice(i, i + chunkSize));
+  for (let i = 0; i < stratagemsData.length; i += rowItemCount)
+    stratagemsRow.push(stratagemsData.slice(i, i + rowItemCount));
   console.log(stratagemsRow);
 
   const dirid = {
@@ -69,16 +77,12 @@ export default function StratagemTableView() {
 
 
   return (
-    <View style={styles.arrowsContainer}>
+    <View style={styles.tableContainer}>
       {stratagemsRow.map((chunk, i) => (
-        <View key={i} style={styles.arrowsRow}>
+        <View key={i} style={styles.tableRow}>
           {chunk.map((stratagem) => (
-            <TouchableOpacity key={stratagem.id}
-              style={[styles.strBtn, favoriteStratagemsId.includes(stratagem.id) ? styles.strFavoriteBtn : null]}
-              onPress={() => { sendStratagem(stratagem) }}
-              onLongPress={() => { addRemoveFavoriteStratagem(stratagem.id) }} >
-              <stratagem.image style={styles.arrowBtnImage}/>
-            </TouchableOpacity>
+            <StratagemTableItem ImageTag={stratagem.image}
+              onPress={() => sendStratagem(stratagem)} />
           ))}
         </View>
       ))}
@@ -87,24 +91,18 @@ export default function StratagemTableView() {
 }
 
 const styles = StyleSheet.create({
-  strBtn: {
+  tableContainer: {
+    alignItems: 'center',
+  },
+  tableItem: {
     width: 100,
     height: 100,
   },
-  strFavoriteBtn: {
-    borderColor: 'black',
-    borderWidth: 1,
+  tableItemFavorite: {
+
   },
-  arrowBtnImage: {
-    width: 80,
-    height: 80,
-    marginTop: 10,
-    marginLeft: 10,
-  },
-  arrowsContainer: {
-    flexDirection: 'column',
-  },
-  arrowsRow: {
+  tableRow: {
     flexDirection: 'row',
+    margin: 10,
   },
 });

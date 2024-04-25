@@ -11,7 +11,6 @@ import StratagemTableView from './StratagemTableView';
 import StratagemListView from './StratagemListView';
 
 import StratagemsInfo from '../StratagemsInfo';
-import { MMKV } from 'react-native-mmkv'
 
 import ProtocolActions from '../modules/ProtocolActions';
 
@@ -20,35 +19,20 @@ const options = {
   host: '10.7.2.146',
   reuseAddress: true,
 };
-const storage = new MMKV()
 
-
-export default function AllStratagemsScreen() {
+export default function MissionScreen() {
   const { client } = useContext(ClientConnectionContext);
-  const [textValue, setTextValue] = useState('Hello from HELLDIVERS 2')
-  const [favoriteStratagemsId, setFavoriteStratagemsId] = useState(JSON.parse(storage.getString('favorite_stratagems_id')) || [])
 
   const onStratagemPress = (stratagem) => {
-    ProtocolActions.sendStratagem(client, stratagem.name, stratagem.command);
+
   }
   const onStratagemLongPress = (stratagem) => {
-    addRemoveFavoriteStratagem(stratagem.id)
+
   }
   const isStratagemSelected = (stratagem) => {
-    return favoriteStratagemsId.includes(stratagem.id)
+    return false
   }
 
-  useEffect(() => {
-    storage.set('favorite_stratagems_id', JSON.stringify(favoriteStratagemsId))
-  }, [favoriteStratagemsId])
-
-  const addRemoveFavoriteStratagem = (stratagemId) => {
-    if (favoriteStratagemsId.includes(stratagemId)) {
-      setFavoriteStratagemsId(favoriteStratagemsId.filter((id) => id !== stratagemId))
-    } else {
-      setFavoriteStratagemsId([...favoriteStratagemsId, stratagemId])
-    }
-  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -56,7 +40,7 @@ export default function AllStratagemsScreen() {
         stratagemsData={StratagemsInfo}
         onPress={onStratagemPress}
         onLongPress={onStratagemLongPress}
-        isSelected={isStratagemSelected} />
+        isSelected={isStratagemSelected}/>
 
       <StatusBar style="auto" />
     </SafeAreaView>

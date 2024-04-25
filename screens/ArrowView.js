@@ -3,47 +3,27 @@ import { TouchableOpacity } from 'react-native';
 import React, { useContext, useState, useEffect } from 'react';
 
 import { ClientConnectionContext } from '../Contexts';
+import ProtocolActions from '../modules/ProtocolActions';
 
 import ProtocolInfo from '../ProtocolInfo_pb';
 
 export default function ArrowView() {
   const { client } = useContext(ClientConnectionContext);
 
-  const sendBtn = (btn) => {
-    console.log('Send button' + btn);
-
-    const authObj = new ProtocolInfo.Hd2Request();
-    authObj.setVersion(1);
-    authObj.setType(ProtocolInfo.RequestType.RT_BUTTON);
-    authObj.setButton(btn);
-
-    const serializedData = authObj.serializeBinary();
-    console.log('serializedData', serializedData);
-    client.write(serializedData);
-  };
-
   const onPressUp = () => {
-    console.log('Button clicked');
-
-    sendBtn(ProtocolInfo.ButtonId.BTN_UP);
+    ProtocolActions.sendButton(client, ProtocolInfo.ButtonId.BTN_UP);
   };
 
   const onPressDown = () => {
-    console.log('Button clicked');
-
-    sendBtn(ProtocolInfo.ButtonId.BTN_DOWN);
+    ProtocolActions.sendButton(client, ProtocolInfo.ButtonId.BTN_DOWN);
   };
 
   const onPressLeft = () => {
-    console.log('Button clicked');
-
-    sendBtn(ProtocolInfo.ButtonId.BTN_LEFT);
+    ProtocolActions.sendButton(client, ProtocolInfo.ButtonId.BTN_LEFT);
   };
 
   const onPressRight = () => {
-    console.log('Button clicked');
-
-    sendBtn(ProtocolInfo.ButtonId.BTN_RIGHT);
+    ProtocolActions.sendButton(client, ProtocolInfo.ButtonId.BTN_RIGHT);
   };
 
   return (

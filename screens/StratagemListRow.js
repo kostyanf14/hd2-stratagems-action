@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#9f9f9f',
         elevation: 2,
     },
-    favorite: {
+    selected: {
         borderColor: '#f0f000',
         borderWidth: 4,
         borderStyle: 'dashed',
@@ -39,9 +39,9 @@ const styles = StyleSheet.create({
     },
 });
 
-const StratagemListRow = ({ title, description, ImageTag, onPress, onLongPress, isFavorite }) => (
+const StratagemListRow = ({ title, description, ImageTag, onPress, onLongPress, isSelected }) => (
     <TouchableOpacity
-    style={[styles.container, isFavorite ? styles.favorite : null]}
+    style={[styles.container, isSelected ? styles.selected : null]}
     onPress={onPress}
     onLongPress={onLongPress}>
         <ImageTag style={styles.photo} />

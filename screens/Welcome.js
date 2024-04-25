@@ -39,7 +39,6 @@ export default function Welcome({ navigation }) {
       <Text>{manualTextValue}</Text>
       <Button title="Connect" onPress={connectBtn}></Button>
       <Button title="Close" onPress={closeConnectionBtn}></Button>
-      {/*<Image source={require('./assets/qr-code.svg')} />/*/}
       <StatusBar style="auto" />
     </SafeAreaView>
   );

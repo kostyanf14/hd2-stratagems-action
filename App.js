@@ -9,6 +9,7 @@ import { ClientConnectionContext } from './Contexts';
 import Welcome from "./screens/Welcome";
 import AllStratagemsScreen from "./screens/AllStratagem";
 import FavoriteStratagemTableView from './screens/FavoriteStratagemTableView';
+import MissionScreen from './screens/MissionScreen';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -42,6 +43,7 @@ export default function App() {
         ) : (
         <Tab.Navigator>
           <Tab.Screen name="AllStratagems" component={AllStratagemsScreen} />
+          <Tab.Screen name="Mission" component={MissionScreen} />
           <Tab.Screen name="FavoriteStratagems" component={FavoriteStratagemTableView} />
         </Tab.Navigator>
         )}

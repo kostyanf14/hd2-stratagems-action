@@ -8,15 +8,13 @@ import StratagemTableView from './StratagemTableView';
 import { ClientConnectionContext } from '../Contexts';
 import StratagemsInfo from '../StratagemsInfo';
 
-import ProtocolInfo from '../ProtocolInfo_pb';
-
 const storage = new MMKV()
 const chunkSize = 4;
 
 const loadFavoriteStratagemIDs = () => JSON.parse(storage.getString('favorite_stratagems_id'));
 
 
-export default function FavoriteStratagemTableView() {
+export default function FavoriteStratagemScreen() {
   const { client } = useContext(ClientConnectionContext);
   const [favoriteStratagemIDs, setFavoriteStratagemIDs] = useState(loadFavoriteStratagemIDs());
 
@@ -32,22 +30,13 @@ export default function FavoriteStratagemTableView() {
     };
   }, []);
 
-  const onPressA3 = () => {
-    console.log('SG_TEST_ABCLEFTD clicked');
-
-    console.log('favoriteStratagems', storage.getString('favorite_stratagems_id'))
-    console.log('favoriteStratagems', storage.getAllKeys())
-  };
-
   const favoriteStratagems = StratagemsInfo.filter((stratagem) => favoriteStratagemIDs.includes(stratagem.id));
 
   return (
-    <View style={styles.container}>
-      <StratagemTableView rowItemCount={3} stratagemsData={favoriteStratagems}/>
+    <SafeAreaView style={styles.container}>
+      <StratagemTableView rowItemCount={3} stratagemsData={favoriteStratagems} />
       <ArrowView />
-
-      <Button title="onPressA3" onPress={onPressA3}></Button>
-    </View>
+    </SafeAreaView>
   );
 }
 

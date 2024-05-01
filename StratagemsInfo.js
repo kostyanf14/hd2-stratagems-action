@@ -227,7 +227,7 @@ export default [
   ///
   {
     id: 0x40,
-    name: 'Hellbomb',
+    name: 'Hellbomb  -- ?',
     image: Hellbomb,
     command: 'DURDULDU'
   },
@@ -247,13 +247,13 @@ export default [
     id: 0x43,
     name: 'Reinforce',
     image: Reinforce,
-    command: 'UDLDU'
+    command: 'UDRLU'
   },
   {
     id: 0x44,
     name: 'Resupply',
     image: Resupply,
-    command: 'DDUL'
+    command: 'DDUR'
   },
   {
     id: 0x45,

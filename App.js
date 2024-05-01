@@ -8,7 +8,7 @@ import { ClientConnectionContext } from './Contexts';
 
 import Welcome from "./screens/Welcome";
 import AllStratagemsScreen from "./screens/AllStratagem";
-import FavoriteStratagemTableView from './screens/FavoriteStratagemTableView';
+import FavoriteStratagemScreen from './screens/FavoriteStratagemScreen';
 import MissionScreen from './screens/MissionScreen';
 
 const Stack = createNativeStackNavigator();
@@ -38,13 +38,13 @@ export default function App() {
   return (
     <ClientConnectionContext.Provider value={{ client, setClient }}>
       <NavigationContainer>
-        {client !== null? (
+        {client === null? (
           <Welcome/>
         ) : (
-        <Tab.Navigator>
+        <Tab.Navigator screenOptions={{ headerShown: false }}>
           <Tab.Screen name="AllStratagems" component={AllStratagemsScreen} />
           <Tab.Screen name="Mission" component={MissionScreen} />
-          <Tab.Screen name="FavoriteStratagems" component={FavoriteStratagemTableView} />
+          <Tab.Screen name="FavoriteStratagems" component={FavoriteStratagemScreen} />
         </Tab.Navigator>
         )}
       </NavigationContainer>

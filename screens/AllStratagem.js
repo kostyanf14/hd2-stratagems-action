@@ -6,8 +6,6 @@ import React, { useContext, useState, useEffect } from 'react';
 
 import { ClientConnectionContext } from '../Contexts';
 
-import ArrowView from './ArrowView';
-import StratagemTableView from './StratagemTableView';
 import StratagemListView from './StratagemListView';
 
 import StratagemsInfo from '../StratagemsInfo';

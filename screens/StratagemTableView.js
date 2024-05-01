@@ -17,17 +17,8 @@ const StratagemTableItem = ({ title, description, ImageTag, onPress, onLongPress
   </TouchableOpacity>
 );
 
-
-
-
 export default function StratagemTableView({rowItemCount, stratagemsData}) {
   const { client } = useContext(ClientConnectionContext);
-  const storage = new MMKV()
-  const [favoriteStratagemsId, setFavoriteStratagemsId] = useState(JSON.parse(storage.getString('favorite_stratagems_id')) || [])
-
-  useEffect(() => {
-    storage.set('favorite_stratagems_id', JSON.stringify(favoriteStratagemsId))
-  }, [favoriteStratagemsId])
 
   const stratagemsRow = [];
   for (let i = 0; i < stratagemsData.length; i += rowItemCount)
@@ -81,7 +72,7 @@ export default function StratagemTableView({rowItemCount, stratagemsData}) {
       {stratagemsRow.map((chunk, i) => (
         <View key={i} style={styles.tableRow}>
           {chunk.map((stratagem) => (
-            <StratagemTableItem ImageTag={stratagem.image}
+            <StratagemTableItem key={stratagem.id} ImageTag={stratagem.image}
               onPress={() => sendStratagem(stratagem)} />
           ))}
         </View>

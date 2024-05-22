@@ -18,14 +18,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 const Stack = createNativeStackNavigator();
 
-const options = {
-  port: 27015,
-  host: '10.7.2.146',
-  reuseAddress: true,
-};
-
-
-function SelectMissionStratagemsScreen( { navigation } ) {
+function SelectMissionStratagemsScreen({ navigation }) {
   const [missionStratagemsId, setMissionStratagemsId] = useState([])
 
   const addRemoveMissionStratagem = (stratagemId) => {
@@ -57,14 +50,14 @@ function SelectMissionStratagemsScreen( { navigation } ) {
         stratagemsData={StratagemsInfo}
         onPress={onStratagemPress}
         onLongPress={onStratagemLongPress}
-        isSelected={isStratagemSelected}/>
+        isSelected={isStratagemSelected} />
 
       <StatusBar style="auto" />
     </SafeAreaView>
   );
 }
 
-function PerformMissionScreen( { route, navigation } ) {
+function PerformMissionScreen({ route, navigation }) {
   const { client } = useContext(ClientConnectionContext);
   const { missionStratagemsId } = route.params;
   const missionStratagems = StratagemsInfo.filter((stratagem) => missionStratagemsId.includes(stratagem.id));
@@ -86,9 +79,9 @@ function PerformMissionScreen( { route, navigation } ) {
         stratagemsData={missionStratagems}
         onPress={onStratagemPress}
         onLongPress={onStratagemLongPress}
-        isSelected={isStratagemSelected}/>
+        isSelected={isStratagemSelected} />
 
-        <ArrowView/> 
+      <ArrowView />
 
       <StatusBar style="auto" />
     </SafeAreaView>
@@ -96,19 +89,6 @@ function PerformMissionScreen( { route, navigation } ) {
 }
 
 export default function MissionScreen() {
-  const { client } = useContext(ClientConnectionContext);
-
-  const onStratagemPress = (stratagem) => {
-
-  }
-  const onStratagemLongPress = (stratagem) => {
-
-  }
-  const isStratagemSelected = (stratagem) => {
-    return false
-  }
-
-
   return (
     <Stack.Navigator>
       <Stack.Screen name="Select mission stratagems" component={SelectMissionStratagemsScreen} />

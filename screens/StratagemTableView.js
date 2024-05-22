@@ -13,11 +13,11 @@ const StratagemTableItem = ({ title, description, ImageTag, onPress, onLongPress
     style={[styles.tableItem, isFavorite ? styles.tableItemFavorite : null]}
     onPress={onPress}
     onLongPress={onLongPress}>
-      <ImageTag style={styles.photo} />
+    <ImageTag style={styles.photo} />
   </TouchableOpacity>
 );
 
-export default function StratagemTableView({rowItemCount, stratagemsData}) {
+export default function StratagemTableView({ rowItemCount, stratagemsData }) {
   const { client } = useContext(ClientConnectionContext);
 
   const stratagemsRow = [];
@@ -25,32 +25,8 @@ export default function StratagemTableView({rowItemCount, stratagemsData}) {
     stratagemsRow.push(stratagemsData.slice(i, i + rowItemCount));
   console.log(stratagemsRow);
 
-  const dirid = {
-    'U': ProtocolInfo.DirectionId.DIR_UP,
-    'D': ProtocolInfo.DirectionId.DIR_DOWN,
-    'L': ProtocolInfo.DirectionId.DIR_LEFT,
-    'R': ProtocolInfo.DirectionId.DIR_RIGHT,
-  }
-
-  const convertStratagemCommand = (command) => {
-    return [...command].map((cmd) => dirid[cmd]);
-  }
-
   const sendStratagem = (stratagem) => {
-    console.log('Send stratagem', stratagem.name);
-
-    const authObj = new ProtocolInfo.Hd2Request();
-    authObj.setVersion(1);
-    authObj.setType(ProtocolInfo.RequestType.RT_STRATAGEM);
-
-    str = convertStratagemCommand(stratagem.command);
-    console.log('stratagem.command', stratagem.command, 'str', str);
-
-    authObj.setStratagemList(str);
-
-    const serializedData = authObj.serializeBinary();
-    console.log('serializedData', serializedData);
-    client.write(serializedData);
+    ProtocolActions.sendStratagem(client, stratagem.name, stratagem.command);
   };
 
   const addRemoveFavoriteStratagem = (stratagemId) => {

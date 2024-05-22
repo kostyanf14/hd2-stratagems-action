@@ -22,9 +22,15 @@ export default function Welcome({ navigation }) {
   const connectBtn = () => {
     console.log('Connect button clicked');
 
-    setClient(TcpSocket.createConnection(options));
+    const socket = TcpSocket.createConnection(options)
+    const token = '3610a686127ad531'
 
-    navigation.navigate('AllStratagems');
+    setClient({
+      socket: socket,
+      token: token,
+    });
+
+    // navigation.navigate('AllStratagems');
   };
 
   const closeConnectionBtn = () => {

@@ -5,25 +5,23 @@ import React, { useContext, useState, useEffect } from 'react';
 import { ClientConnectionContext } from '../Contexts';
 import ProtocolActions from '../modules/ProtocolActions';
 
-import ProtocolInfo from '../ProtocolInfo_pb';
-
 export default function ArrowView() {
   const { client } = useContext(ClientConnectionContext);
 
   const onPressUp = () => {
-    ProtocolActions.sendButton(client, ProtocolInfo.ButtonId.BTN_UP);
+    ProtocolActions.sendButton(client, 'U');
   };
 
   const onPressDown = () => {
-    ProtocolActions.sendButton(client, ProtocolInfo.ButtonId.BTN_DOWN);
+    ProtocolActions.sendButton(client, 'D');
   };
 
   const onPressLeft = () => {
-    ProtocolActions.sendButton(client, ProtocolInfo.ButtonId.BTN_LEFT);
+    ProtocolActions.sendButton(client, 'L');
   };
 
   const onPressRight = () => {
-    ProtocolActions.sendButton(client, ProtocolInfo.ButtonId.BTN_RIGHT);
+    ProtocolActions.sendButton(client, 'R');
   };
 
   return (

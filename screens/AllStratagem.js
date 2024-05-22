@@ -23,8 +23,7 @@ const storage = new MMKV()
 
 export default function AllStratagemsScreen() {
   const { client } = useContext(ClientConnectionContext);
-  const [textValue, setTextValue] = useState('Hello from HELLDIVERS 2')
-  const [favoriteStratagemsId, setFavoriteStratagemsId] = useState(JSON.parse(storage.getString('favorite_stratagems_id')) || [])
+  const [favoriteStratagemsId, setFavoriteStratagemsId] = useState(JSON.parse(storage.getString('favorite_stratagems_id') || '[]' ))
 
   const onStratagemPress = (stratagem) => {
     ProtocolActions.sendStratagem(client, stratagem.name, stratagem.command);

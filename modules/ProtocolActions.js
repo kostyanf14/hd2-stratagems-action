@@ -1,56 +1,62 @@
 import { useContext } from 'react';
+import crc from 'crc';
 
 import { ClientConnectionContext } from '../Contexts';
 import ProtocolInfo from '../ProtocolInfo_pb';
 
-
-
 const CMD2DIR = {
-    'U': ProtocolInfo.DirectionId.DIR_UP,
-    'D': ProtocolInfo.DirectionId.DIR_DOWN,
-    'L': ProtocolInfo.DirectionId.DIR_LEFT,
-    'R': ProtocolInfo.DirectionId.DIR_RIGHT,
-  }
+  'X': ProtocolInfo.ActionButtonId.A_BNT_STRATAGEM,
+  'U': ProtocolInfo.ActionButtonId.A_BNT_UP,
+  'D': ProtocolInfo.ActionButtonId.A_BNT_DOWN,
+  'L': ProtocolInfo.ActionButtonId.A_BNT_LEFT,
+  'R': ProtocolInfo.ActionButtonId.A_BNT_RIGHT,
+}
 
-  const convertStratagemCommand = (command) => {
-    return [...command].map((cmd) => CMD2DIR[cmd]);
-  }
+const convertStratagemCommand = (command) => {
+  return [...command].map((cmd) => CMD2DIR[cmd]);
+}
 
-  const sendStratagem = (client, name, stratagemCommand) => {
-    console.log('Send stratagem', name);
+const sendString = (client, stringCommand) => {
+  const hd2req = new ProtocolInfo.Hd2Request();
+  const time = Math.floor(Date.now() / 1000);
 
-    const hd2req = new ProtocolInfo.Hd2Request();
-    hd2req.setVersion(1);
-    hd2req.setType(ProtocolInfo.RequestType.RT_STRATAGEM);
-    hd2req.setStratagemList(convertStratagemCommand(stratagemCommand));
+  hd2req.setVersion(1);
+  hd2req.setTime(time);
+  hd2req.setActionbuttonsList(convertStratagemCommand(stringCommand));
+
+  if (client) {
+    const signature = crc.crc32(time + stringCommand + client.token);
+    hd2req.setSignature(signature);
 
     const serializedData = hd2req.serializeBinary();
-    if (client) {
-      client.write(serializedData);
-    }
-    else {
-      console.log('Client is not connected, serializedData:', serializedData);
-    }
-  };
 
-const sendBtn = (client, btn) => {
-  console.log('Send button' + btn);
-
-  const hd2req = new ProtocolInfo.Hd2Request();
-  hd2req.setVersion(1);
-  hd2req.setType(ProtocolInfo.RequestType.RT_BUTTON);
-  hd2req.setButton(btn);
-
-  const serializedData = hd2req.serializeBinary();
-  if (client) {
-    client.write(serializedData);
+    client.socket.write(serializedData);
   }
   else {
-    console.log('Client is not connected, serializedData:', serializedData);
+    const signature = crc.crc32(time + stringCommand + 'client.token');
+    hd2req.setSignature(signature);
+
+    const serializedData = hd2req.serializeBinary();
+
+    console.log('Client is not connected, ignore signature, serializedData:', serializedData);
   }
 };
 
+const sendStratagem = (client, name, stratagemCommand) => {
+  console.log('Send stratagem: ', name);
+
+  const fullStratagemCommand = 'X' + stratagemCommand;
+
+  sendString(client, fullStratagemCommand);
+};
+
+const sendButton = (client, buttonString) => {
+  console.log('Send button: ', buttonString);
+
+  sendString(client, buttonString);
+};
+
 export default ProtocolActions = {
-    sendButton: sendBtn ,
-    sendStratagem: sendStratagem ,
+  sendButton: sendButton,
+  sendStratagem: sendStratagem,
 };
